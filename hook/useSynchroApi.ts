@@ -45,7 +45,9 @@ export default function useSynchroApi(): {
 
         console.log(responseApi);
       } catch (error) {
-        console.log(error);
+        console.error(`erreur dans SynchroApiPush:  ${error}`);
+        // on renvoie l'erreur plus haut
+        throw error;  
       }
     }
 
@@ -87,6 +89,7 @@ export default function useSynchroApi(): {
           newListCourse.push(courseFromApi);
         }
       }
+      // TODO: faire une action qui combine les 2 reducers
       const prevStateCourse = courseData;
       let newStateCourse = courseReducer(prevStateCourse, {
         type: "add",
@@ -101,6 +104,7 @@ export default function useSynchroApi(): {
       dispatch({ type: "load", courses: newStateCourse });
     } catch (error) {
       console.error(`erreur dans le pullSynchro: ${error}`);
+      throw error; 
     }
   }, []);
 
