@@ -1,4 +1,4 @@
-import { View, ScrollView, StyleSheet } from "react-native";
+import { View, ScrollView, StyleSheet, Alert, AlertButton } from "react-native";
 import { Text, TextInput, Button, Surface } from "react-native-paper";
 import { useEffect, useState } from "react";
 import ConfigurationType from "../models/ConfigurationType";
@@ -6,10 +6,13 @@ import useSnackBar from "../hook/useSnackBar";
 import StorageService from "../services/StorageServices";
 import { useStoreZustand } from "../store/storeZustand";
 
+
+
 export default function ParamScreen() {
 
   const urlApi = useStoreZustand(state => state.urlApi); 
   const setUrlApi = useStoreZustand(state => state.setUrlApi); 
+  const dispatch = useStoreZustand(state => state.dispatchCourse); 
 
   const [valueForm, setValueForm] = useState<ConfigurationType>({
     urlApi: "",
@@ -70,6 +73,21 @@ export default function ParamScreen() {
     });
   };
 
+  const deletingCourse = () => {
+    dispatch({type: "reset"}); 
+  }
+
+  const handleOnDeleting = () => {
+
+    const BtnDeleting: AlertButton = {text: "Suppresion", onPress: deletingCourse }; 
+    const BtnCancel: AlertButton = {text: "Annuler", onPress: () => console.log("test")}; 
+
+    Alert.alert("Attention", "vous etes sur, cette opération est irréversible ? ", 
+      [BtnDeleting, BtnCancel], 
+      {cancelable: true}
+    );  
+  }
+
   return (
     <ScrollView contentContainerStyle={style.container}>
       <Surface style={style.areaParam}>
@@ -110,6 +128,7 @@ export default function ParamScreen() {
           </View>
         </View>
       </Surface>
+      <Button mode="contained" onPress={handleOnDeleting}>Effacer data</Button>
       <Button mode="contained">Syncronisation enquête</Button>
       <Button mode="contained">Recherche mise à jour application</Button>
     </ScrollView>
