@@ -12,5 +12,6 @@ export default interface ApiCourseResponse {
     ha: string;
     placeDeparture: string;
     placeArrival: string;
+    updateAt: string; 
   };
 };
