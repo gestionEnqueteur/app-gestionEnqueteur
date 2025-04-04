@@ -13,6 +13,7 @@ type StoreState = {
   urlApi: string;
   mainSnackBarProp: SnackbarProps;
   courses: Course[];
+  isHydrated: boolean; 
 }
 
 type StoreAction = {
@@ -20,6 +21,7 @@ type StoreAction = {
   setJwt: (token: string) => void;
   setUrlApi: (url: string) => void;
   setMainSnackBarProp: (props: SnackbarProps) => void;
+  setIsHydrated: (newValue: boolean) => void; 
 }
 
 
@@ -41,6 +43,9 @@ const functionCreator: StateCreator<StoreZustand> = (set) => ({
   // Token JWT
   jwt: undefined,
   setJwt: (token: string) => set({ jwt: token }),
+  // Hydratation
+  isHydrated: false, 
+  setIsHydrated: (newValue) => set({ isHydrated: newValue}), 
   // snackBar 
   mainSnackBarProp:
   {
@@ -69,7 +74,10 @@ export const useStoreZustand = create<StoreZustand>()(
       onRehydrateStorage: () => state => {
         console.log("Hydrate Storage");
         if (state?.coursesData) {
-          state.courses = state.coursesData.map(item => new Course(item));
+          const newCourse = state.coursesData.map(item => new Course(item));
+          state.dispatchCourse({type: "load", courses: newCourse}); 
+          state.setIsHydrated(true); 
+
         }
       }
 

@@ -60,7 +60,8 @@ describe("Test la class Course", () => {
       pds: "LLF",
       vac: "test",
       status: StatusEnum.DRAFT,
-      isSynchro: false
+      isSynchro: false, 
+      updatedAt: "fake Date" //a modifier
     }
 
     const courseTest = new Course(courseInterfaceTest); 

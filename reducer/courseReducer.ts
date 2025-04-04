@@ -17,6 +17,7 @@ export default function courseReducer(
 
   switch (action.type) {
     case "add":
+      console.log("Reducer: add"); 
       newState = addCourse(state, action.course);
       return newState;
 
@@ -34,6 +35,7 @@ export default function courseReducer(
       return newState;
 
     case "updateApi":
+        console.log("Reducer : updateAPI"); 
         newState = state; 
       for (let course of action.courses) {
         newState = state.map((item) => (item.id === course.id ? course : item));
@@ -41,6 +43,7 @@ export default function courseReducer(
       return newState;
 
     case "load":
+      console.log("Reducer: load"); 
       newState = action.courses;
       return newState;
 

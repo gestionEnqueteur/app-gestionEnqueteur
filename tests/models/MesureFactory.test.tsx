@@ -1,10 +1,9 @@
 import ApiMesureBscResponse from "../../models/ApiMesureBscResponse";
-import ApiMesureResponse from "../../models/ApiMesureResponse";
 import MesureBsc from "../../models/bsc/MesureBsc";
 import MesureBscInterface from "../../models/bsc/MesureBscInterface";
 import Mesure from "../../models/Mesure";
-import MesureFactory from "../../models/MesureFactory";
 import MesureInterface from "../../models/MesureInterface";
+import MesureFactory from "../../services/MesureFactory";
 
 describe("test de MesureFactory", () => {
   // data global pour les test : 

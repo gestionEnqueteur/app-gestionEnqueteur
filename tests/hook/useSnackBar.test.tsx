@@ -6,8 +6,7 @@ import {
 } from "@testing-library/react-native";
 import MainSnackBar from "../../components/MainSnackBar";
 import useSnackBar from "../../hook/useSnackBar";
-import { snackBarState } from '../../store/storeAtom'
-import { useRecoilValue } from "recoil";
+import { useStoreZustand } from "../../store/storeZustand";
 
 jest.useFakeTimers();
 
@@ -29,7 +28,7 @@ describe("test useSnackBar", () => {
   test("Le hook useSnack bar change bien le state", async () => {  
     const { result } = renderHook(() => {
       const snack = useSnackBar()
-      const state = useRecoilValue(snackBarState)
+      const state = useStoreZustand(state => state.mainSnackBarProp)
       return { snack, state };
     }, {wrapper})
     expect(result.current.state.visible).toBe(false);

@@ -27,7 +27,7 @@ export default function useSnackBar() {
     setSnackBar({
       ...restProps,
       onDismiss: () => {
-        setSnackBar(prev => ({
+        setSnackBar((prev: CustomSnackBarProps) => ({
           ...prev,
           visible: false,
         }));
@@ -38,7 +38,7 @@ export default function useSnackBar() {
       action: snackBarProps.action ? snackBarProps.action : {
         label: "Fermer",
         onPress: () => {
-          setSnackBar(prev => ({ ...prev, visible: false }));
+          setSnackBar((prev: any) => ({ ...prev, visible: false }));
         },
       },
       visible: true,
