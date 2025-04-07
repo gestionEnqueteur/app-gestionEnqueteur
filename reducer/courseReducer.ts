@@ -2,7 +2,7 @@ import CourseInterface from "../models/CourseInterface";
 
 export type ActionCourse =
   | { type: "update"; course: CourseInterface }
-  | { type: "delete"; course: CourseInterface }
+  | { type: "delete"; courseIds: number[] }
   | { type: "add"; course: CourseInterface | CourseInterface[] }
   | { type: "load"; courses: CourseInterface[] }
   | { type: "synchro"; coursesId: number[] }
@@ -21,8 +21,9 @@ export default function courseReducer(
       newState = addCourse(state, action.course);
       return newState;
 
-    case "delete":
-      newState = state.filter((item) => item.id !== action.course.id);
+    //permet de supprimer 1 ou plusieurs courses
+      case "delete":
+      newState = state.filter((item) => !action.courseIds.includes(item.id)); // Vérifie si l'id de la course est dans le tableau courseIds
       return newState;
 
     case "update":

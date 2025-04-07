@@ -1,0 +1,76 @@
+[
+  {
+    "id": 1,
+    "mission": "IC123",
+    "pds": "Paris Gare de Lyon",
+    "vac": "VAC1",
+    "affectation": "Agent Dupont",
+    "infoHoraireCourse": {
+      "date": "2025-04-08",
+      "heureDebut": "08:00",
+      "heureFin": "10:00",
+      "datetimeDepartEnq": "2025-04-08T08:00:00Z",
+      "datetimeArriveEnq": "2025-04-08T10:00:00Z",
+      "gareDepartEnq": "Paris Gare de Lyon",
+      "gareArriveEnq": "Lyon Part-Dieu"
+    },
+    "status": 4,
+    "ligne": "Ligne A",
+    "service": "Matin",
+    "isSynchro": false,
+    "trainCourse": "Train 123",
+    "objectif": 95,
+    "commentaire": "RAS",
+    "updatedAt": "2025-04-07T10:00:00Z"
+  },
+  {
+    "id": 2,
+    "mission": "TER456",
+    "pds": "Lyon Perrache",
+    "vac": "VAC2",
+    "affectation": "Agent Martin",
+    "infoHoraireCourse": {
+      "date": "2025-04-09",
+      "heureDebut": "12:00",
+      "heureFin": "14:30",
+      "datetimeDepartEnq": "2025-04-09T12:00:00Z",
+      "datetimeArriveEnq": "2025-04-09T14:30:00Z",
+      "gareDepartEnq": "Lyon Perrache",
+      "gareArriveEnq": "Marseille Saint-Charles"
+    },
+    "status": 5,
+    "ligne": "Ligne B",
+    "service": "Après-midi",
+    "isSynchro": false,
+    "trainCourse": "Train 456",
+    "objectif": 90,
+    "commentaire": "Prévoir contrôle",
+    "updatedAt": "2025-04-07T12:00:00Z"
+  },
+  {
+    "id": 3,
+    "mission": "TGV789",
+    "pds": "Marseille",
+    "vac": "VAC3",
+    "affectation": "Agent Bernard",
+    "infoHoraireCourse": {
+      "date": "2025-04-10",
+      "heureDebut": "16:00",
+      "heureFin": "18:30",
+      "datetimeDepartEnq": "2025-04-10T16:00:00Z",
+      "datetimeArriveEnq": "2025-04-10T18:30:00Z",
+      "gareDepartEnq": "Marseille Saint-Charles",
+      "gareArriveEnq": "Nice Ville"
+    },
+    "status": 3,
+    "ligne": "Ligne C",
+    "service": "Soirée",
+    "isSynchro": false,
+    "trainCourse": "Train 789",
+    "objectif": 85,
+    "commentaire": "",
+    "updatedAt": "2025-04-07T16:00:00Z"
+  }
+]
+
+

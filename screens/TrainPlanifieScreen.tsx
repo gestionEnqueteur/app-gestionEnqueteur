@@ -1,18 +1,21 @@
-import { FlatList } from "react-native";
+import {FlatList, View} from "react-native";
 import DetailCourse from "../components/DetailCourse";
 import Course from "../models/Course";
-import { Text } from "react-native-paper";
+import {Button, Text} from "react-native-paper";
 import { useStoreZustand } from "../store/storeZustand";
 import useSynchroApi from "../hook/useSynchroApi";
 import useSnackBar from "../hook/useSnackBar";
+import useCourseCleaner from "../hook/useCourseCleaner";
+import mokCourses from "../mock/courses.json"
+
 
 export default function TrainPlanifieScreen() {
   const courses = useStoreZustand((state) => state.courses);
   const snackbar = useSnackBar(); 
-
   const { synchroApiPush, synchroApiPull } = useSynchroApi();
-
-  console.log(`mount TrainPlanfieScreen `);
+  const dispatchCourse = useStoreZustand((state) => state.dispatchCourse);
+  const { cleanup } = useCourseCleaner();  // Importation et utilisation du hook
+  console.log(`mount TrainPlanifieScreen `);
 
   const handleOnRefresh = async () => {
     try {
@@ -32,14 +35,25 @@ export default function TrainPlanifieScreen() {
     return <DetailCourse course={item} key={item.id.toString()} />;
   };
 
+  const handleLoadMock = () => {
+    dispatchCourse({ type: "add", course: mokCourses });
+    cleanup();
+  };
+
   return (
-    <FlatList
-      data={courses}
-      renderItem={renderItem}
-      keyExtractor={(item) => item.id.toString()}
-      onRefresh={handleOnRefresh}
-      refreshing={false}
-      ListEmptyComponent={<Text>La liste est vide </Text>}
-    />
+      <View style={{ flex: 1 }}>
+        <Button mode="contained" onPress={handleLoadMock}>
+          Charger les données
+        </Button>
+
+        <FlatList
+            data={courses}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id.toString()}
+            onRefresh={handleOnRefresh}
+            refreshing={false}
+            ListEmptyComponent={<Text>La liste est vide</Text>}
+        />
+      </View>
   );
 }
