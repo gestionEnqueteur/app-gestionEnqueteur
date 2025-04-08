@@ -2,7 +2,7 @@
   {
     "id": 1,
     "mission": "IC123",
-    "pds": "Paris Gare de Lyon",
+    "pds": "Paris Gare de Lyon ",
     "vac": "VAC1",
     "affectation": "Agent Dupont",
     "infoHoraireCourse": {
@@ -11,7 +11,7 @@
       "heureFin": "10:00",
       "datetimeDepartEnq": "2025-04-08T08:00:00Z",
       "datetimeArriveEnq": "2025-04-08T10:00:00Z",
-      "gareDepartEnq": "Paris Gare de Lyon",
+      "gareDepartEnq": "Paris Gare de Lyon Perrache de nom a rallonge qui n'en fini pas",
       "gareArriveEnq": "Lyon Part-Dieu"
     },
     "status": 4,
@@ -35,8 +35,8 @@
       "heureFin": "14:30",
       "datetimeDepartEnq": "2025-04-09T12:00:00Z",
       "datetimeArriveEnq": "2025-04-09T14:30:00Z",
-      "gareDepartEnq": "Lyon Perrache",
-      "gareArriveEnq": "Marseille Saint-Charles"
+      "gareDepartEnq": "Lyon ",
+      "gareArriveEnq": "Marseille"
     },
     "status": 5,
     "ligne": "Ligne B",

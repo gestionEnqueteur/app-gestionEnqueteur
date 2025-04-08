@@ -7,7 +7,8 @@ export type ActionCourse =
   | { type: "load"; courses: CourseInterface[] }
   | { type: "synchro"; coursesId: number[] }
   | { type: "reset" }
-  | { type: "updateApi"; courses: CourseInterface[] };
+  | { type: "updateApi"; courses: CourseInterface[] }
+  | { type: "addAndUpdate"; newCourses: CourseInterface[]; updatedCourses: CourseInterface[] };
 
 export default function courseReducer(
   state: CourseInterface[],
@@ -52,6 +53,20 @@ export default function courseReducer(
       newState = state.map((item) =>
         action.coursesId.includes(item.id) ? { ...item, isSynchro: true } : item
       );
+      return newState;
+
+    case "addAndUpdate":
+      console.log("Reducer: addAndUpdate");
+
+      // D'abord, on met à jour les cours existants
+      let stateWithUpdatedCourses = state.map((item) => {
+        const updated = action.updatedCourses.find(course => course.id === item.id);
+        return updated ? updated : item;
+      });
+
+      // Ensuite, on ajoute les nouveaux cours (en évitant les doublons via addCourse existant)
+      newState = addCourse(stateWithUpdatedCourses, action.newCourses);
+
       return newState;
 
     case "reset":
