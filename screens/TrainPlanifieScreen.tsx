@@ -6,7 +6,6 @@ import { useStoreZustand } from "../store/storeZustand";
 import useSynchroApi from "../hook/useSynchroApi";
 import useSnackBar from "../hook/useSnackBar";
 import useCourseCleaner from "../hook/useCourseCleaner";
-import mokCourses from "../mock/courses.json"
 import {StatusEnum} from "../models/enum";
 
 
@@ -14,8 +13,6 @@ export default function TrainPlanifieScreen() {
   const courses = useStoreZustand((state) => state.courses);
   const snackbar = useSnackBar(); 
   const { synchroApiPush, synchroApiPull } = useSynchroApi();
-  const dispatchCourse = useStoreZustand((state) => state.dispatchCourse);
-  const { cleanup } = useCourseCleaner();  // Importation et utilisation du hook
   console.log(`mount TrainPlanifieScreen `);
 
   const handleOnRefresh = async () => {

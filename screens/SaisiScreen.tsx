@@ -3,13 +3,11 @@ import { View, StyleSheet } from "react-native";
 import useSynchroApi from "../hook/useSynchroApi";
 import useSnackBar from "../hook/useSnackBar";
 import {useStoreZustand} from "../store/storeZustand";
-import StorageService from "../services/StorageServices";
 import useCourseCleaner from "../hook/useCourseCleaner";
 
 export default function SaisiScreen() {
   const { synchroApiPush, synchroApiPull } = useSynchroApi();
   const snackbar = useSnackBar();
-  const dispatchCourse = useStoreZustand((state) => state.dispatchCourse);
   const { cleanup } = useCourseCleaner()
 
   const handlePull = async () => {

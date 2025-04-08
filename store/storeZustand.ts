@@ -5,7 +5,6 @@ import courseReducer, { ActionCourse } from '../reducer/courseReducer'
 import { SnackbarProps } from 'react-native-paper'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import CourseInterface from '../models/CourseInterface'
-import {StatusEnum} from "../models/enum";
 
 //tout ce qu'on conserve
 type StoreState = {

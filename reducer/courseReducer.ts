@@ -60,8 +60,10 @@ export default function courseReducer(
 
       // D'abord, on met à jour les cours existants
       let stateWithUpdatedCourses = state.map((item) => {
-        const updated = action.updatedCourses.find(course => course.id === item.id);
-        return updated ? updated : item;
+        {
+          const updated = action.updatedCourses.find(course => course.id === item.id);
+          return updated || item;
+        }
       });
 
       // Ensuite, on ajoute les nouveaux cours (en évitant les doublons via addCourse existant)
