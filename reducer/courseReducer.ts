@@ -2,7 +2,7 @@ import CourseInterface from "../models/CourseInterface";
 
 export type ActionCourse =
   | { type: "update"; course: CourseInterface }
-  | { type: "delete"; courseIds: number[] }
+  | { type: "delete"; course: CourseInterface | CourseInterface[] }
   | { type: "add"; course: CourseInterface | CourseInterface[] }
   | { type: "load"; courses: CourseInterface[] }
   | { type: "synchro"; coursesId: number[] }
@@ -17,13 +17,13 @@ export default function courseReducer(
 
   switch (action.type) {
     case "add":
-      console.log("Reducer: add"); 
+      console.log("Reducer: add");
       newState = addCourse(state, action.course);
       return newState;
 
     //permet de supprimer 1 ou plusieurs courses
-      case "delete":
-      newState = state.filter((item) => !action.courseIds.includes(item.id)); // Vérifie si l'id de la course est dans le tableau courseIds
+    case "delete":
+      newState = deleteCourse(state, action.course);
       return newState;
 
     case "update":
@@ -36,15 +36,15 @@ export default function courseReducer(
       return newState;
 
     case "updateApi":
-        console.log("Reducer : updateAPI"); 
-        newState = state; 
+      console.log("Reducer : updateAPI");
+      newState = state;
       for (let course of action.courses) {
         newState = state.map((item) => (item.id === course.id ? course : item));
       }
       return newState;
 
     case "load":
-      console.log("Reducer: load"); 
+      console.log("Reducer: load");
       newState = action.courses;
       return newState;
 
@@ -84,4 +84,19 @@ function addCourse(
   }
   console.warn("duplication ID");
   return prevState;
+}
+
+function deleteCourse(
+  prevState: CourseInterface[],
+  course: CourseInterface | CourseInterface[]
+) {
+  if (course instanceof Array) {
+    // alors c'est un tableau qu'on a recupé
+    return prevState.filter(
+      (itemStorage) => !course.find((item) => item.id === itemStorage.id)
+    );
+  } else {
+    // une course simple
+    return prevState.filter((item) => item.id !== course.id);
+  }
 }

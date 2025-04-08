@@ -34,13 +34,4 @@ export default class StorageService {
     }
   }
 
-  static async clearZustandStore() {
-    try {
-      await AsyncStorage.removeItem("store-zustand");
-      console.log(" Zustand store cleared");
-    } catch (e) {
-      console.error(" Error clearing Zustand store", e);
-    }
-  }
-
 }

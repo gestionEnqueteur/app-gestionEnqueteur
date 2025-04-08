@@ -8,5 +8,5 @@ export enum StatusEnum {
   AFFECTED,
   CANCELED,
   TERMINED,
-  ASAISIR,
+  TO_FILL,
 }

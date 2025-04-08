@@ -35,17 +35,10 @@ export default function TrainPlanifieScreen() {
     return <DetailCourse course={item} key={item.id.toString()} />;
   };
 
-  const handleLoadMock = () => {
-    dispatchCourse({ type: "add", course: mokCourses });
-    cleanup();
-  };
+
 
   return (
       <View style={{ flex: 1 }}>
-        <Button mode="contained" onPress={handleLoadMock}>
-          Charger les données
-        </Button>
-
         <FlatList
             data={courses}
             renderItem={renderItem}
