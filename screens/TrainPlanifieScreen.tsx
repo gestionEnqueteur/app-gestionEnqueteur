@@ -7,6 +7,7 @@ import useSynchroApi from "../hook/useSynchroApi";
 import useSnackBar from "../hook/useSnackBar";
 import useCourseCleaner from "../hook/useCourseCleaner";
 import mokCourses from "../mock/courses.json"
+import {StatusEnum} from "../models/enum";
 
 
 export default function TrainPlanifieScreen() {
@@ -35,12 +36,23 @@ export default function TrainPlanifieScreen() {
     return <DetailCourse course={item} key={item.id.toString()} />;
   };
 
+  // Filtrer les courses valides (pas annulées ni terminées)
+  const filteredCourses = courses
+    .filter(
+      (course) =>
+        course.status !== StatusEnum.CANCELED && course.status !== StatusEnum.TERMINED
+    )
+    .sort((a, b) =>
+      new Date(a.infoHoraireCourse?.datetimeDepartEnq).getTime() -
+      new Date(b.infoHoraireCourse?.datetimeDepartEnq).getTime()
+    );
+
 
 
   return (
       <View style={{ flex: 1 }}>
         <FlatList
-            data={courses}
+            data={filteredCourses}
             renderItem={renderItem}
             keyExtractor={(item) => item.id.toString()}
             onRefresh={handleOnRefresh}

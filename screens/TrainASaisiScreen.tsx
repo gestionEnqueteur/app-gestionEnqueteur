@@ -6,9 +6,12 @@ import DetailCourse from "../components/DetailCourse";
 
 export default function TrainASaisiScreen() {
   const courses = useStoreZustand((state) => state.courses);
-  const filteredCourses = courses.filter(
-    (course) => course.status === StatusEnum.TO_FILL
-  );
+  const filteredCourses = courses
+    .filter((course) => course.status === StatusEnum.TO_FILL)
+    .sort((a, b) =>
+      new Date(a.infoHoraireCourse?.datetimeDepartEnq).getTime() -
+      new Date(b.infoHoraireCourse?.datetimeDepartEnq).getTime()
+    );
 
   //Dès que le dispatchCourse met à jour les données avec load, tous les composants abonnés sont re-render automatiquement.
   //Le FlatList affiche alors uniquement les cours restants filtrés + triés.
