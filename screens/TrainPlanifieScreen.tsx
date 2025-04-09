@@ -37,7 +37,7 @@ export default function TrainPlanifieScreen() {
   const filteredCourses = courses
     .filter(
       (course) =>
-        course.status !== StatusEnum.CANCELED && course.status !== StatusEnum.TERMINED
+        course.status !== StatusEnum.TO_FILL
     )
     .sort((a, b) =>
       new Date(a.infoHoraireCourse?.datetimeDepartEnq).getTime() -
@@ -47,14 +47,14 @@ export default function TrainPlanifieScreen() {
 
 
   return (
-      <View style={{ flex: 1 }}>
-        <FlatList
-            data={filteredCourses}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id.toString()}
-            onRefresh={handleOnRefresh}
-            refreshing={false}
-            ListEmptyComponent={<Text>La liste est vide</Text>}
+    <View style={{ flex: 1 }}>
+      <FlatList
+        data={filteredCourses}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id.toString()}
+        onRefresh={handleOnRefresh}
+        refreshing={false}
+        ListEmptyComponent={<Text>La liste est vide</Text>}
         />
       </View>
   );
