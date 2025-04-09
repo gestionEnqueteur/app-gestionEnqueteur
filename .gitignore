@@ -21,6 +21,6 @@ coverage
 
 # Code Editor 
 .vscode
-
+.idea
 # Configuration google 
 google-services.json

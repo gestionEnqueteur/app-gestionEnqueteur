@@ -13,11 +13,11 @@ export default function ParamScreen() {
   const urlApi = useStoreZustand(state => state.urlApi); 
   const setUrlApi = useStoreZustand(state => state.setUrlApi); 
   const dispatch = useStoreZustand(state => state.dispatchCourse); 
-
   const [valueForm, setValueForm] = useState<ConfigurationType>({
     urlApi: "",
     user: "",
   });
+  const setJwt = useStoreZustand(state => state.setJwt);
 
   const displaySnackBarCommun = useSnackBar();
 
@@ -125,6 +125,9 @@ export default function ParamScreen() {
             <Button mode="contained-tonal" onPress={handleOnClickSubmit}>
               Enregistrer
             </Button>
+          </View>
+          <View>
+            <Button mode="contained-tonal" onPress={() => setJwt(undefined)}>Deconnexion</Button>
           </View>
         </View>
       </Surface>
