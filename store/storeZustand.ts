@@ -18,7 +18,7 @@ type StoreState = {
 
 type StoreAction = {
   dispatchCourse: (action: ActionCourse) => void;
-  setJwt: (token: string) => void;
+  setJwt: (token: string | undefined) => void;
   setUrlApi: (url: string) => void;
   setMainSnackBarProp: (props: SnackbarProps) => void;
   setIsHydrated: (newValue: boolean) => void; 
@@ -42,7 +42,7 @@ const functionCreator: StateCreator<StoreZustand> = (set) => ({
 
   // Token JWT
   jwt: undefined,
-  setJwt: (token: string) => set({ jwt: token }),
+  setJwt: (token: string | undefined) => set({ jwt: token }),
   // Hydratation
   isHydrated: false, 
   setIsHydrated: (newValue) => set({ isHydrated: newValue}), 
