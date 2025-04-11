@@ -90,14 +90,8 @@ export default function useSynchroApi(): {
         }
       }
 
-      const newStateCourse = courseReducer(courseData, {
-        type: "addAndUpdate",
-        newCourses: newListCourse,
-        updatedCourses: coursesToUpdate,
-      });
-
       // a la toute fin on met à jour le state en remplacement le state complet.
-      dispatch({ type: "load", courses: newStateCourse });
+      dispatch({ type: "addAndUpdate", newCourses: newListCourse, updatedCourses: coursesToUpdate });
     } catch (error) {
       console.error(`erreur dans le pullSynchro: ${error}`);
       throw error; 
