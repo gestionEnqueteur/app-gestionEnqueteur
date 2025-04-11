@@ -65,7 +65,7 @@ export default function useSynchroApi(): {
       const response = await api.get(`/api/courses?populate=*`);
 
       const newListCourse: Course[] = [];
-      const cousesToUpdate: Course[] = [];
+      const coursesToUpdate: Course[] = [];
 
       //traitement de la réponse
       const listeCourseApiUnknown: unknown[] = response.data.data; // ajout vérification
@@ -81,7 +81,7 @@ export default function useSynchroApi(): {
           // objet n'existe on vérifie la date de mise a jour
           if (courseFromZustand.updatedAt !== courseFromApi.updatedAt) {
             // les date ne sont pas synchro, on le met dans la liste des course a updater
-            cousesToUpdate.push(courseFromApi);
+            coursesToUpdate.push(courseFromApi);
           }
         } else {
           // la course n'est pas dans le store Zustand, on le rajoute dans la liste
@@ -89,19 +89,9 @@ export default function useSynchroApi(): {
           newListCourse.push(courseFromApi);
         }
       }
-      // TODO: faire une action qui combine les 2 reducers
-      const prevStateCourse = courseData;
-      let newStateCourse = courseReducer(prevStateCourse, {
-        type: "add",
-        course: newListCourse,
-      });
-      newStateCourse = courseReducer(newStateCourse, {
-        type: "updateApi",
-        courses: cousesToUpdate,
-      });
 
       // a la toute fin on met à jour le state en remplacement le state complet.
-      dispatch({ type: "load", courses: newStateCourse });
+      dispatch({ type: "addAndUpdate", newCourses: newListCourse, updatedCourses: coursesToUpdate });
     } catch (error) {
       console.error(`erreur dans le pullSynchro: ${error}`);
       throw error; 

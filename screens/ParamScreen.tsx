@@ -5,6 +5,7 @@ import ConfigurationType from "../models/ConfigurationType";
 import useSnackBar from "../hook/useSnackBar";
 import StorageService from "../services/StorageServices";
 import { useStoreZustand } from "../store/storeZustand";
+import useCourseCleaner from "../hook/useCourseCleaner";
 
 
 
@@ -74,12 +75,15 @@ export default function ParamScreen() {
   };
 
   const deletingCourse = () => {
-    dispatch({type: "reset"}); 
-  }
+    dispatch({type: "reset"});
+  };
+
+
+  const { cleanup } = useCourseCleaner()
 
   const handleOnDeleting = () => {
 
-    const BtnDeleting: AlertButton = {text: "Suppresion", onPress: deletingCourse }; 
+    const BtnDeleting: AlertButton = {text: "Suppression", onPress: deletingCourse };
     const BtnCancel: AlertButton = {text: "Annuler", onPress: () => console.log("test")}; 
 
     Alert.alert("Attention", "vous etes sur, cette opération est irréversible ? ", 
@@ -102,7 +106,7 @@ export default function ParamScreen() {
           />
         </View>
         <View>
-          <Text>Enquetteur</Text>
+          <Text>Enqueteur</Text>
           <TextInput
             mode="outlined"
             label="enqueteur"
@@ -129,8 +133,9 @@ export default function ParamScreen() {
         </View>
       </Surface>
       <Button mode="contained" onPress={handleOnDeleting}>Effacer data</Button>
-      <Button mode="contained">Syncronisation enquête</Button>
+      <Button mode="contained">Synchronisation enquête</Button>
       <Button mode="contained">Recherche mise à jour application</Button>
+      <Button mode="contained" onPress={cleanup}>Nettoyer les anciennes courses</Button>
     </ScrollView>
   );
 }
