@@ -1,18 +1,19 @@
-import { FlatList } from "react-native";
+import {FlatList, View} from "react-native";
 import DetailCourse from "../components/DetailCourse";
 import Course from "../models/Course";
-import { Text } from "react-native-paper";
+import {Button, Text} from "react-native-paper";
 import { useStoreZustand } from "../store/storeZustand";
 import useSynchroApi from "../hook/useSynchroApi";
 import useSnackBar from "../hook/useSnackBar";
+import useCourseCleaner from "../hook/useCourseCleaner";
+import {StatusEnum} from "../models/enum";
+
 
 export default function TrainPlanifieScreen() {
   const courses = useStoreZustand((state) => state.courses);
   const snackbar = useSnackBar(); 
-
   const { synchroApiPush, synchroApiPull } = useSynchroApi();
-
-  console.log(`mount TrainPlanfieScreen `);
+  console.log(`mount TrainPlanifieScreen `);
 
   const handleOnRefresh = async () => {
     try {
@@ -32,14 +33,29 @@ export default function TrainPlanifieScreen() {
     return <DetailCourse course={item} key={item.id.toString()} />;
   };
 
+  // Filtrer les courses valides (pas annulées ni terminées)
+  const filteredCourses = courses
+    .filter(
+      (course) =>
+        course.status !== StatusEnum.TO_FILL
+    )
+    .sort((a, b) =>
+      new Date(a.infoHoraireCourse?.datetimeDepartEnq).getTime() -
+      new Date(b.infoHoraireCourse?.datetimeDepartEnq).getTime()
+    );
+
+
+
   return (
-    <FlatList
-      data={courses}
-      renderItem={renderItem}
-      keyExtractor={(item) => item.id.toString()}
-      onRefresh={handleOnRefresh}
-      refreshing={false}
-      ListEmptyComponent={<Text>La liste est vide </Text>}
-    />
+    <View style={{ flex: 1 }}>
+      <FlatList
+        data={filteredCourses}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id.toString()}
+        onRefresh={handleOnRefresh}
+        refreshing={false}
+        ListEmptyComponent={<Text>La liste est vide</Text>}
+        />
+      </View>
   );
 }

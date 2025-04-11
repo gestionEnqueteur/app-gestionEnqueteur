@@ -33,6 +33,7 @@ export default function SaisiBscScreen({ route }: Readonly<Props>) {
       vides: 0,
       inexploitables: 0,
       distribuees: 0,
+      exploitables: 0,
     }
   );
 
@@ -40,6 +41,7 @@ export default function SaisiBscScreen({ route }: Readonly<Props>) {
   const [errorDistribuee, setErrorDistribuee] = useState(false);
   const [errorVide, setErrorVide] = useState(false);
   const [errorInexploitable, setErrorInexploitable] = useState(false);
+  const [errorExploitable, setErrorExploitable] = useState(false);
 
   // handleOnChangeQuestionnaire
   const handleOnChangeVide = (newValue: string) => {
@@ -47,7 +49,7 @@ export default function SaisiBscScreen({ route }: Readonly<Props>) {
     Number.isNaN(vide) ? setErrorVide(true) : setErrorVide(false);
     setQuestionnaire({ ...questionnaire, vides: vide });
   };
-  const handleOnChnageInexploitable = (newValue: string) => {
+  const handleOnChangeInexploitable = (newValue: string) => {
     const inexploitables = +newValue;
     Number.isNaN(inexploitables)
       ? setErrorInexploitable(true)
@@ -55,7 +57,7 @@ export default function SaisiBscScreen({ route }: Readonly<Props>) {
     setQuestionnaire({ ...questionnaire, inexploitables: inexploitables });
   };
 
-  const handleOnChnageDistribuee = (newValue: string) => {
+  const handleOnChangeDistribuee = (newValue: string) => {
     const distribuee = +newValue;
     // check error
     Number.isNaN(distribuee)
@@ -65,9 +67,17 @@ export default function SaisiBscScreen({ route }: Readonly<Props>) {
     setQuestionnaire({ ...questionnaire, distribuees: distribuee });
   };
 
+  const handleOnChangeExploitable = (newValue: string) => {
+    const exploitable = +newValue;
+    Number.isNaN(exploitable)
+        ? setErrorExploitable(true)
+        : setErrorExploitable(false);
+    setQuestionnaire({ ...questionnaire, exploitables: exploitable });
+  };
+
   const handleOnSaveSaisiBsc = () => {
     // vérification des error
-    if (errorDistribuee || errorInexploitable || errorVide) {
+    if (errorDistribuee || errorInexploitable || errorVide || errorExploitable) {
       console.log("erreur du formulaire saisi BSC");
       //TODO: mettre en place la notification SnackBar pour erreur de saisi
       return;
@@ -140,7 +150,7 @@ export default function SaisiBscScreen({ route }: Readonly<Props>) {
           <TextInput
             mode="outlined"
             label="Questionnaire distribué : "
-            onChangeText={handleOnChnageDistribuee}
+            onChangeText={handleOnChangeDistribuee}
             error={errorDistribuee}
             defaultValue={course.mesure.questionnaires?.distribuees.toString()}
             keyboardType="number-pad"
@@ -156,10 +166,18 @@ export default function SaisiBscScreen({ route }: Readonly<Props>) {
           <TextInput
             mode="outlined"
             label="Questionnaire Inexploitable : "
-            onChangeText={handleOnChnageInexploitable}
+            onChangeText={handleOnChangeInexploitable}
             error={errorInexploitable}
             defaultValue={course.mesure.questionnaires?.inexploitables.toString()}
             keyboardType="number-pad"
+          />
+          <TextInput
+              mode="outlined"
+              label="Questionnaire exploitable :"
+              onChangeText={handleOnChangeExploitable}
+              error={errorExploitable}
+              defaultValue={course.mesure.questionnaires?.exploitables?.toString() ?? "0"}
+              keyboardType="number-pad"
           />
         </View>
         <View style={style.areaButton}>
