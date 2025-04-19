@@ -25,7 +25,7 @@ export default function LoginScreen() {
 
       const expoPushToken = await getExpoPushTokenAsync();
       const responseApi = await api.post<{ jwt: string, user: unknown}>('/auth/loginApp', {
-        identifier: form.identifier, 
+        username: form.identifier,
         password: form.password,
         expoPushToken: expoPushToken,
       }); 
