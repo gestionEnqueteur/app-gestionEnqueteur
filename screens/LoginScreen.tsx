@@ -5,6 +5,7 @@ import useApi from "../hook/useApi";
 import { useStoreZustand } from "../store/storeZustand";
 import { AxiosError } from "axios";
 import useSnackBar from "../hook/useSnackBar";
+import {getExpoPushTokenAsync} from "expo-notifications";
 
 
 export default function LoginScreen() {
@@ -20,15 +21,17 @@ export default function LoginScreen() {
 
   const handleOnSubmit = async () => {
     try {
-      setIsLoading(true); 
-  
-      const responseApi = await api.post<{ jwt: string, user: unknown}>('/api/auth/local', {
-        identifier: form.identifier, 
-        password: form.password, 
+      setIsLoading(true);
+
+      const expoPushToken = await getExpoPushTokenAsync();
+      const responseApi = await api.post<{ acces_token: string}>('/auth/loginApp', {
+        username: form.identifier,
+        password: form.password,
+        expoPushToken: expoPushToken,
       }); 
       console.log(responseApi.data); 
 
-      setJwt(responseApi.data.jwt); 
+      setJwt(responseApi.data.acces_token);
 
   
     }
