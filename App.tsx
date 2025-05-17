@@ -7,13 +7,13 @@ import MainSnackBar from "./components/MainSnackBar";
 
 export default function App() {
   return (
-      <PaperProvider theme={MD3LightTheme}>
-        <AppProvider>
-          <NavigationContainer>
-            <StackNavigation />
-            <MainSnackBar />
-          </NavigationContainer>
-        </AppProvider>
-      </PaperProvider>
+    <PaperProvider theme={MD3LightTheme}>
+      <AppProvider>
+        <NavigationContainer>
+          <StackNavigation />
+        </NavigationContainer>
+      </AppProvider>
+      <MainSnackBar />
+    </PaperProvider>
   );
 }
