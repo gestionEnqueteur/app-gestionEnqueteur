@@ -28,7 +28,7 @@ export default function DetailCourse(props: Readonly<Props>) {
   const handleGoToAction = () => {
     // appuie sur le composant
     switch (course.mission) {
-      case "BSC HDF":
+      case "BSC":
         console.log("Basculement vers la page de saisie");
         navigation.navigate("SaisieBsc", { courseId: course.id });
 
@@ -57,7 +57,7 @@ export default function DetailCourse(props: Readonly<Props>) {
             )}
           </View>
           <View>
-            {course.mission === "BSC HDF" && (
+            {course.mission === "BSC" && (
               <MenuBurger course={course} />
             )}
           </View>

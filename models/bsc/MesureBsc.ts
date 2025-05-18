@@ -33,18 +33,16 @@ export default class MesureBsc extends Mesure implements MesureBscInterface {
   convertDataToApi(): unknown {
 
     return {
-      __component: "mesure.mesure-bsc",
       composition: this.infoTrain.composition,
       numMaterial: this.infoTrain.numMaterial,
-      questionnaireDistribuess: this.questionnaires?.distribuees,
-      questionnaireVides: this.questionnaires?.vides,
-      questionnaireInexploitables: this.questionnaires?.inexploitables,
-      questionnaireExploitables: this.questionnaires?.exploitables,
-      retardDepart: this.retards.retardDepart,
-      retardArrive: this.retards.retardArrive,
-      gareMonte: this.infoEnqueteur.gareMonteeReel,
-      gareDescente: this.infoEnqueteur.gareDescenteReel
-
+      distrbutedQuestionnaire: this.questionnaires?.distribuees,
+      emptyQuestionnaire: this.questionnaires?.vides,
+      invalidQuestionnaire: this.questionnaires?.inexploitables,
+      validQuestionnnaire: this.questionnaires?.exploitables,
+      lateDeparture: this.retards.retardDepart,
+      lateArrived: this.retards.retardArrive,
+      departureStation: this.infoEnqueteur.gareMonteeReel,
+      arrivalStation: this.infoEnqueteur.gareDescenteReel
     }
   }
   static createMesureFromApi(dataApi: unknown): MesureBsc {

@@ -1,7 +1,7 @@
 import InfoHoraireCourse from "./InfoHoraireCourse";
 import { StatusEnum } from "./enum";
 import CourseInterface from "./CourseInterface";
-import ApiCourseResponse from "./ApiCourseResponse";
+import  { courseSchemaApi } from "./ApiCourseResponse";
 import Mesure from "./Mesure";
 import MesureFactory from "../services/MesureFactory";
 import  { enableMapSet, immerable} from "immer"; 
@@ -14,8 +14,8 @@ export default class Course implements CourseInterface{
 
   id!: number;
   mission!: string;
-  pds!: string;
-  vac!: string;
+  pds?: string;
+  vac?: string;
   affectation?: string;
   infoHoraireCourse!: InfoHoraireCourse;
   status!: StatusEnum;
@@ -39,10 +39,10 @@ export default class Course implements CourseInterface{
     else {
       // mesure n'existe pas on crée une mesure vide
       switch(course.mission) {
-        case "BSC HDF" : 
+        case "BSC" : 
           this.mesure = MesureFactory.createMesure("BSC"); 
           break; 
-        case "MQ HDF": 
+        case "MQ": 
           console.log("mesure MQ à implementer"); 
           break; 
         default: 
@@ -70,59 +70,29 @@ export default class Course implements CourseInterface{
   }
 
   static createCourseFromApi(dataApi: unknown): Course {
-    if (!this.isValidReponseApi(dataApi)) {
-      throw new Error("Format incorrect");
-    }
+   
+    const courseApi = courseSchemaApi.parse(dataApi); 
 
     const newCourse: CourseInterface = {
-      id: dataApi.id,
-      mission: dataApi.attributes.mission,
-      vac: "X",
-      pds: "X",
-      ligne: dataApi.attributes.ligne,
-      trainCourse: dataApi.attributes.trainCourse,
+      id: courseApi.id,
+      mission: courseApi.mission,
+      vac: courseApi.vac,
+      pds: courseApi.pds,
+      ligne: courseApi.ligne,
+      trainCourse: courseApi.trainCourse,
       status: StatusEnum.DRAFT, // TODO: a modifié
-      objectif: dataApi.attributes.objectif,
+      objectif: courseApi.objectif,
       isSynchro: true,
       infoHoraireCourse: {
-        gareDepartEnq:
-          dataApi.attributes.placeDeparture,
-        gareArriveEnq:
-          dataApi.attributes.placeArrival,
-        datetimeDepartEnq:
-          dataApi.attributes.hd,
-        datetimeArriveEnq:
-          dataApi.attributes.ha,
+        gareDepartEnq: courseApi.placeDeparture,
+        gareArriveEnq: courseApi.placeArrival,
+        datetimeDepartEnq: courseApi.hd,
+        datetimeArriveEnq: courseApi.ha,
       },
-      updatedAt: dataApi.attributes.updateAt
+      updatedAt: courseApi.updatadAt
     }
 
     return new Course(newCourse);
-
-  }
-
-  static isValidReponseApi(response: unknown): response is ApiCourseResponse {
-
-    if (typeof response !== 'object' || response === null) return false;
-
-    const obj = response as Record<string, unknown>;
-    const attributes = obj.attributes;
-    if (typeof attributes !== 'object' || attributes === null) return false;
-
-    const attrs = attributes as Record<string, unknown>;
-
-    return (
-      'attributes' in response &&
-      typeof attrs.mission === "string" &&
-      (typeof attrs.trainCourse === "string" || attrs.trainCourse === null) &&
-      (typeof attrs.commentaire === "string" || attrs.commentaire === null) &&
-      (typeof attrs.ligne === "string" || attrs.ligne === null) &&
-      typeof attrs.status === "string" &&
-      (typeof attrs.objectif === "number" || attrs.objectif === null) &&
-      typeof attrs.hd === "string" &&
-      typeof attrs.ha === "string"
-
-    )
 
   }
 }

@@ -2,24 +2,23 @@ import Course from "../models/Course";
 import useApi from "../hook/useApi";
 import Mesure from "../models/Mesure";
 import { useStoreZustand } from "../store/storeZustand";
-import courseReducer from "../reducer/courseReducer";
 import { useCallback } from "react";
+import { AxiosError, AxiosResponse } from "axios";
 
 export default function useSynchroApi(): {
   synchroApiPush: () => Promise<void>;
   synchroApiPull: () => Promise<void>;
 } {
-  const listCourse = useStoreZustand(state => state.courses); 
-  const dispatch = useStoreZustand(state => state.dispatchCourse); 
-  const courseData = useStoreZustand(state => state.coursesData); 
+  const listCourse = useStoreZustand(state => state.courses);
+  const dispatch = useStoreZustand(state => state.dispatchCourse);
 
   const api = useApi();
 
-  console.log("mount useSynchroApi"); 
+  console.log("mount useSynchroApi");
 
-  const synchroApiPush =  useCallback(async () => {
-    
-    console.log("appel de synchroApiPush"); 
+  const synchroApiPush = useCallback(async () => {
+
+    console.log("appel de synchroApiPush");
 
     // Envoi des mesures
     const coursesNotSynchronised = listCourse.filter(
@@ -33,21 +32,26 @@ export default function useSynchroApi(): {
       if (!mesure) continue;
 
       const dataToSend = {
-        data: {
-          mesure: [mesure.convertDataToApi()],
-          course: course.id,
-        },
+        mesureBsc: mesure.type === "BSC" ? mesure.convertDataToApi() : undefined,
+        mesureMq: mesure.type === "MQ" ? mesure.convertDataToApi() : undefined,
+        courseId: course.id,
+        type: course.mission
       };
       console.log(dataToSend);
       try {
-        const responseApi = await api.post(`/api/mesures`, dataToSend);
+        const responseApi = await api.post(`/enq/mesures`, dataToSend);
         coursesIdCourseSynchronised.push(course.id);
 
         console.log(responseApi);
       } catch (error) {
+
+        if(error instanceof AxiosError) {
+          console.log("erreur détaillé"); 
+          console.log(error.response?.data); 
+        }
         console.error(`erreur dans SynchroApiPush:  ${error}`);
         // on renvoie l'erreur plus haut
-        throw error;  
+        throw error;
       }
     }
 
@@ -57,18 +61,20 @@ export default function useSynchroApi(): {
 
   const synchroApiPull = useCallback(async () => {
 
-    console.log("appel de synchroApiPull"); 
+    console.log("appel de synchroApiPull");
 
     try {
       console.log(`pull data from API`);
       //TODO: par la suite, récuperer que les data de l'utilisateur
-      const response = await api.get(`/api/courses?populate=*`);
-
+      const response = await api.get<AxiosResponse>(`/enq/courses`);
+      console.log(response.data);
       const newListCourse: Course[] = [];
       const coursesToUpdate: Course[] = [];
 
       //traitement de la réponse
-      const listeCourseApiUnknown: unknown[] = response.data.data; // ajout vérification
+      if (!(response.data instanceof Array)) throw new Error("API ne donne pas le bon format (array) ");
+
+      const listeCourseApiUnknown: unknown[] = response.data; // ajout vérification
       // on itère sur les items de API
       for (const responseBrute of listeCourseApiUnknown) {
         // on essaye de les transformer en course
@@ -94,9 +100,9 @@ export default function useSynchroApi(): {
       dispatch({ type: "addAndUpdate", newCourses: newListCourse, updatedCourses: coursesToUpdate });
     } catch (error) {
       console.error(`erreur dans le pullSynchro: ${error}`);
-      throw error; 
+      throw error;
     }
   }, []);
 
-  return { synchroApiPull, synchroApiPush};
+  return { synchroApiPull, synchroApiPush };
 }
