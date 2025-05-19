@@ -1,26 +1,28 @@
 import { render, RenderOptions, RenderResult } from '@testing-library/react-native'
-import { RecoilRoot } from "recoil";
-import { PaperProvider } from "react-native-paper";
+import { PaperProvider } from 'react-native-paper'
+import React, { ReactNode } from 'react'
+import { useStoreZustand } from '../store/storeZustand' // ton store existant
 
+// ✅ Type de l'état du store extrait depuis useStoreZustand
+type ZustandState = ReturnType<typeof useStoreZustand.getState>
 
-
-export const AllTheProviders = ({ children }: { children: React.ReactNode}): React.JSX.Element => {
+// ✅ Provider personnalisé Zustand + Paper
+const AllTheProviders = ({ children }: { children: ReactNode }): JSX.Element => {
   return (
-    <RecoilRoot>
-      <PaperProvider>
-        {children}
-      </PaperProvider>
-    </RecoilRoot>
+    <PaperProvider>
+      {children}
+    </PaperProvider>
   );
-  
-}
-
-
-// Custom render fonction
-const customRender = (ui: React.ReactElement<any>, options?: RenderOptions): RenderResult => {
-  return render(ui, {wrapper: AllTheProviders, ...options})
 };
 
+// ✅ Fonction render personnalisée
+const customRender = (
+  ui: React.ReactElement,
+  options?: RenderOptions
+): RenderResult => {
+  return render(ui, { wrapper: AllTheProviders, ...options });
+};
 
 export * from '@testing-library/react-native';
-export { customRender as render }
+export { customRender as render };
+
